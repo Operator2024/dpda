@@ -1,4 +1,3 @@
-from json import load
 from re import findall
 from typing import Text, Dict, List, Any, Tuple
 
@@ -24,7 +23,6 @@ def validator(g: Dict, verifyingstring: Text) -> Text:
 
 
 def generatorofcode(graph: Dict, codebygraph: Dict):
-
     for i in graph:
         if isinstance(graph.get(i), dict) is False:
             if i == "LEFT":
@@ -33,7 +31,6 @@ def generatorofcode(graph: Dict, codebygraph: Dict):
                 pass
             elif i == "RIGHT":
                 if codebygraph.get(graph["LEVEL"]) is not None:
-                    # print(codebygraph[graph["LEVEL"]], "TEST", graph["LEVEL"], codebygraph)
 
                     if len(codebygraph[graph["LEVEL"]]) == 1:
                         codebygraph[graph["LEVEL"]].append(f"LOAD {graph['RIGHT']}")
@@ -62,23 +59,17 @@ def generatorofcode(graph: Dict, codebygraph: Dict):
             if codebygraph.get(graph["LEVEL"]) is None:
 
                 if int(graph[i]["LEVEL"]) - 1 == int(graph["LEVEL"]):
-                    # l[graph["LEVEL"]] = [l[graph[i]['LEVEL']][len(l[graph[i]['LEVEL']])-1]]
                     codebygraph[graph["LEVEL"]] = [codebygraph[graph[i]['LEVEL']]]
                 elif int(graph[i]["LEVEL"]) == int(graph["LEVEL"]) - 1:
-                    # l[graph["LEVEL"]] = [l[graph[i]['LEVEL']][len(l[graph[i]['LEVEL']]) - 1]]
                     codebygraph[graph["LEVEL"]] = [codebygraph[graph[i]['LEVEL']]]
             elif codebygraph.get(graph["LEVEL"]) is not None:
                 if len(codebygraph[graph["LEVEL"]]) == 1:
-                    # l[graph["LEVEL"]].append(l[graph[i]['LEVEL']][len(l[graph[i]['LEVEL']])-1])
                     codebygraph[graph["LEVEL"]].append(codebygraph[graph[i]['LEVEL']])
                     if graph["OPER"] == "*":
-                        # l[graph["LEVEL"]].append(f"MPY ${graph['LEVEL']+1}")
                         codebygraph[graph["LEVEL"]].append(f"MPY {codebygraph[graph['LEVEL']][0][len(codebygraph[graph['LEVEL']][0]) - 1][4::]}")
                     elif graph["OPER"] == "+":
-                        # l[graph["LEVEL"]].append(f"ADD ${graph['LEVEL']+1}")
                         codebygraph[graph["LEVEL"]].append(f"ADD {codebygraph[graph['LEVEL']][0][len(codebygraph[graph['LEVEL']][0]) - 1][4::]}")
                 elif len(codebygraph[graph["LEVEL"]]) > 1:
-                    # l[graph["LEVEL"]].append(l[graph[i]['LEVEL']][len(l[graph[i]['LEVEL']]) - 1])
                     codebygraph[graph["LEVEL"]].append(codebygraph[graph[i]['LEVEL']])
                     if graph["OPER"] == "*":
                         codebygraph[graph["LEVEL"]].append(f"MPY ${graph['LEVEL']}")
@@ -115,28 +106,3 @@ def generatoroftablename(code: List, names: Text = None, number: Any = 0) -> Tup
                             number += 1
                             names += f"{number} {i[6::]} Variable name\n"
     return names, number
-
-
-if __name__ == '__main__':
-    with open("output.json", "r") as fthr:
-        jsonGraph: Dict = load(fthr)
-    # a = "variable=(2+((2+7)*PRICE2))*((TAX33X+2)*(6+TT))"
-
-    outputString: Text = ""
-    codeRaw: Dict = {}
-
-    kk = validator(jsonGraph, outputString)
-    print(kk)
-    ab = generatorofcode(jsonGraph, codeRaw)
-    print("======")
-    k = [x for x in ab.keys()]
-
-    ab[int("-1")] = [ab[int("-1")][2], f"STORE {jsonGraph['LEFT']}"]
-
-    bb, _ = generatoroftablename(ab[int("-1")])
-    print(bb)
-    # for i in sorted(k):
-    #     print(" " * i, ab[i], i)
-    # for i in sorted(k):
-    #     print(ab[i], i)
-    print(ab[int("-1")])

@@ -136,11 +136,7 @@ def dpda(q: Text, symbol: Text, stack: List, sigmaAlphabet: set_type[Text], leve
 
 # Запись по знаку, закрывающей скобке, либо по концу строки и пустоте стека
 def json_graph(level, x, graph, lexem, oper=None):
-    a = "variable=((AB+2)*3)*(1+6)"
-    # 1,0,..,+
-
     total_level = level + x
-    print(total_level, "TESTDEBUG", graph.keys())
 
     if graph.get(f"{total_level}") is None:
         graph_vertex = copy(graphPattern)
@@ -158,7 +154,6 @@ def json_graph(level, x, graph, lexem, oper=None):
 
     elif graph.get(f"{total_level}") is not None:
         if oper is None and lexem == "":
-            # total_level = old_level
             graph_vertex = copy(graph[f"{total_level}"])
             if str(graph_vertex["LEVEL"]) == f"{total_level}":
                 if graph_vertex["LEFT"] != "":
@@ -262,7 +257,6 @@ if __name__ == '__main__':
 
             if i == "=":
                 qCurrent, stack, level = dpda(qCurrent, i, stack, sAlphabet, level)
-                print(qCurrent, stack, level, i)
                 graph_vertex_ = copy(graphPattern)
                 if graph_vertex_["LEVEL"] == -1:
                     if graph_vertex_["LEFT"] == "":
@@ -273,11 +267,9 @@ if __name__ == '__main__':
                     graph[f"-1"] = graph_vertex_
             elif i == "(":
                 qCurrent, stack, level = dpda(qCurrent, i, stack, sAlphabet, level)
-                print(i, level)
             elif i == ")":
                 old_level = level
                 qCurrent, stack, level = dpda(qCurrent, i, stack, sAlphabet, level)
-                print(i, level, lexeme)
 
                 graph, kx = json_graph(old_level, x, graph, lexeme)
                 x = kx
@@ -289,15 +281,12 @@ if __name__ == '__main__':
                 reset = True
             elif i == "*" or i == "+":
                 qCurrent, stack, level = dpda(qCurrent, i, stack, sAlphabet, level)
-                print(qCurrent, stack, level, i)
 
-                print(x, "X")
                 graph, kx = json_graph(level, x, graph, lexeme, i)
                 x = kx
                 reset = True
             else:
                 qCurrent, stack, level = dpda(qCurrent, i, stack, sAlphabet, level)
-                print(qCurrent, stack, level, i)
 
                 if cnt + 1 == len(userString):
                     lexeme += i
@@ -330,10 +319,8 @@ if __name__ == '__main__':
                 codeRaw[int("-1")] = [codeRaw[int("-1")][2], f"STORE {graph['-1']['LEFT']}"]
 
                 table, _ = generatoroftablename(codeRaw[int("-1")])
-                print(table)
-                print(codeRaw[int("-1")])
                 with open("output.txt", "w", encoding="utf8") as wt:
-                    wt.write("Table of names\n" + table + "="*10 + "\n")
+                    wt.write("Table of names\n" + table + "=" * 10 + "\n")
                     wt.write("Unoptimized code - " + str(codeRaw[int("-1")]) + "\n")
 
             else:
