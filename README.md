@@ -38,3 +38,6 @@
 #### На данной схеме работы автомата элемент "<span style="color:#16F2CD">e</span>" - пустой стек, "<span style="color:#16F2CD">L</span>" - левая скобка на стеке. Надпись e/L сделана для упрощения схемы.
 ![DPDA work diagram full size](src/dpda2.svg "DPDA work diagram")
 
+## License
+
+See the [LICENSE](LICENSE) file for license rights and limitations (MIT).
