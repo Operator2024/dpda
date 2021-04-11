@@ -91,7 +91,7 @@ def generatoroftablename(code: List, names: Text = None, number: Any = 0) -> Tup
                     if findall("\d{1,}\.\d{1,}", i[5::]) and float(i[5::]):
                         if not findall(f"{i[5::]}\sVariable", names):
                             number += 1
-                            names += f"{number} {i[5::]} Variable, float type\n"
+                            names += f"{number} {i[5::]} Const, float type\n"
                     elif findall("\w{1,}", i[5::]) and not i[5::].isdigit():
                         if not findall(f"{i[5::]}\sVariable", names):
                             number += 1
@@ -99,7 +99,7 @@ def generatoroftablename(code: List, names: Text = None, number: Any = 0) -> Tup
                     elif findall("\d{1,}", i[5::]) and i[5::].isdigit():
                         if not findall(f"{i[5::]}\sVariable", names):
                             number += 1
-                            names += f"{number} {i[5::]} Variable, integer type\n"
+                            names += f"{number} {i[5::]} Const, integer type\n"
                 elif "STORE" in i:
                     if findall("\w{1,}", i[6::]):
                         if not findall(f"{i[6::]}\sVariable", names):

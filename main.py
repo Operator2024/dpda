@@ -4,6 +4,7 @@ from time import sleep
 from typing import Set as set_type
 
 from codegen import *
+from optimizecode import *
 
 
 def inputverifier(word: Text) -> set_type[Text] or Text:
@@ -322,10 +323,10 @@ if __name__ == '__main__':
                 with open("output.txt", "w", encoding="utf8") as wt:
                     wt.write("Table of names\n" + table + "=" * 10 + "\n")
                     wt.write("Unoptimized code - " + str(codeRaw[int("-1")]) + "\n")
+                    wt.write(f"Optimized code - {codeoptimize3(codeoptimize2(codeoptimize(codeRaw[int('-1')]))[0])[0]}" + "\n")
 
             else:
                 pass
-
     else:
         print("The total count of open brackets is not equal to the total count of closed brackets")
         sleep(5)
