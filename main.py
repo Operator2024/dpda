@@ -1,3 +1,4 @@
+import re
 from copy import copy
 from json import dump
 from time import sleep
@@ -65,7 +66,8 @@ def dpda(q: Text, symbol: Text, stack: List, sigmaAlphabet: set_type[Text], leve
             qCurrentLocal = "q5"
             return qCurrentLocal, stack, level
         elif findall("(\*|\+)", symbol) != []:
-            raise Exception("An arithmetic operation symbol can't appear after bracket and before a variable!")
+            raise Exception(
+                "An arithmetic operation symbol can't appear after bracket and before a variable!")
     elif q == "q4":
         if "[0-9]" in sigmaAlphabet and findall("[0-9]", symbol) != []:
             qCurrentLocal = "q4"
@@ -91,7 +93,8 @@ def dpda(q: Text, symbol: Text, stack: List, sigmaAlphabet: set_type[Text], leve
         elif "[a-zA-Z]" in sigmaAlphabet and findall("[a-zA-Z]", symbol) != []:
             qCurrentLocal = "q5"
             return qCurrentLocal, stack, level
-        elif "[0-9]" in sigmaAlphabet and findall("\)", symbol) != [] or "[a-zA-Z]" in sigmaAlphabet and findall("\)", symbol) != []:
+        elif "[0-9]" in sigmaAlphabet and findall("\)", symbol) != [] or "[a-zA-Z]" in \
+                sigmaAlphabet and findall("\)", symbol) != []:
             if len(stack) > 1 and "(" in stack:
                 qCurrentLocal = "q6"
                 stack.pop(0)
@@ -110,9 +113,11 @@ def dpda(q: Text, symbol: Text, stack: List, sigmaAlphabet: set_type[Text], leve
             else:
                 raise Exception("Stack contains no paired brackets")
         elif "[0-9]" in sigmaAlphabet and findall("[0-9]", symbol) != []:
-            raise Exception("This state only supports the closing bracket or arithmetic operation symbol")
+            raise Exception(
+                "This state only supports the closing bracket or arithmetic operation symbol")
         elif "[a-zA-Z]" in sigmaAlphabet and findall("[a-zA-Z]", symbol) != []:
-            raise Exception("This state only supports the closing bracket or arithmetic operation symbol")
+            raise Exception(
+                "This state only supports the closing bracket or arithmetic operation symbol")
         elif findall("(\*|\+)", symbol) != []:
             qCurrentLocal = "q2"
             return qCurrentLocal, stack, level
@@ -221,7 +226,6 @@ def json_graph(level, x, graph, lexem, oper=None):
 
 
 if __name__ == '__main__':
-
     qStates: set_type = {"q0", "q1", "q2", "q3", "q4", "q5", "q6", "q7"}
     qStart: Text = "q0"
     qEnd: set_type = {"q4", "q5", "q6", "q7"}
@@ -233,14 +237,17 @@ if __name__ == '__main__':
     qCurrent = qStart
 
     graph: Dict = {}
-    graphPattern: Dict = {"LEVEL": -1, "LEVEL_ORIG": -1, "LEFT": "", "OPER": "", "RIGHT": "", "CODE": [], "X": 0}
+    graphPattern: Dict = {"LEVEL": -1, "LEVEL_ORIG": -1, "LEFT": "", "OPER": "", "RIGHT": "",
+                          "CODE": [], "X": 0}
     level = -1
     lexeme: Text = ""
     reset = False
 
-    userString: Text = input('Enter a string in this format, but without quotes "var=a+b":  ')
+    userString: Text = re.sub("\s{1,}", "", input(
+        'Enter a string in this format, but without quotes "var=a+b":  '))
 
-    if inputverifier(userString) != "The total count of open brackets is not equal to the total count of closed brackets":
+    if inputverifier(
+            userString) != "The total count of open brackets is not equal to the total count of closed brackets":
         # cnt - Simple counter
         # x - nesting ratio to control the number of brackets and correct construction graph in json file.
         # Nesting ratio to control the number of brackets and correct construction graph in json file.
@@ -248,7 +255,8 @@ if __name__ == '__main__':
         # In order not overwrite existing nesting level i used this coefficient
         # Example, variable=(a+b)*(c+6).
         # Left and right parts have brackets that equal nesting level - 1.
-        # If i save (a+b) in nesting level 1, then (c+6) i can't save as nesting level 1 already usage, then i can use this coefficient and get a new nesting level different from 1.
+        # If i save (a+b) in nesting level 1, then (c+6) i can't save as nesting level 1 already usage,
+        # then i can use this coefficient and get a new nesting level different from 1.
         cnt = 0
         x = 0
         for i in userString:
@@ -310,7 +318,8 @@ if __name__ == '__main__':
             with open("output.json", "w") as wr:
                 dump(graph["-1"], wr, indent=1)
         elif qCurrent not in qEnd:
-            print(f"The deterministic extrusion automaton has a current state {qCurrent}, which isn't in the set of final states")
+            print(f"The deterministic extrusion automaton has a current state {qCurrent},"
+                  f" which isn't in the set of final states")
 
         if qCurrent in qEnd:
             outputString: Text = ""

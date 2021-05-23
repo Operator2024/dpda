@@ -125,6 +125,10 @@ def codeoptimize3(unoptimizecode):
                         if "LOAD" in unoptimizecode[j + 1]:
                             unoptimizecode[j + 1] += "rrr"
                             posl.append(unoptimizecode[j])
+                        if type(unoptimizecode[j - 2]) == type(list()):
+                            if "LOAD" in unoptimizecode[j - 2][0]:
+                                unoptimizecode[j + 1] += "rrr"
+                                posl.append(unoptimizecode[j])
 
     if len(posl) == 2:
         r1 = posl[0].split(" ")[1]

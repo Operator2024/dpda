@@ -34,10 +34,11 @@ def generatorofcode(graph: Dict, codebygraph: Dict):
 
                     if len(codebygraph[graph["LEVEL"]]) == 1:
                         codebygraph[graph["LEVEL"]].append(f"LOAD {graph['RIGHT']}")
+                        codebygraph[graph["LEVEL"]].append(f"STORE ${graph['LEVEL']}")
                         if graph["OPER"] == "*":
-                            codebygraph[graph["LEVEL"]].append(f"MPY ${graph['LEVEL'] + 1}")
+                            codebygraph[graph["LEVEL"]].append(f"MPY ${graph['LEVEL'] + 1 -1}")
                         elif graph["OPER"] == "+":
-                            codebygraph[graph["LEVEL"]].append(f"ADD ${graph['LEVEL'] + 1}")
+                            codebygraph[graph["LEVEL"]].append(f"ADD ${graph['LEVEL'] + 1 -1}")
                     elif len(codebygraph[graph["LEVEL"]]) > 1:
                         codebygraph[graph["LEVEL"]].append(f"LOAD {graph['RIGHT']}")
                         if graph["OPER"] == "*":
